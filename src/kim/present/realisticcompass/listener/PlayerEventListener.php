@@ -30,7 +30,6 @@ use kim\present\realisticcompass\RealisticCompass;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 
 class PlayerEventListener implements Listener{
 	/** @var RealisticCompass */
@@ -58,6 +57,7 @@ class PlayerEventListener implements Listener{
 				$this->plugin->getTask()->addPlayer($player);
 			}else{
 				$this->plugin->getTask()->removePlayer($player);
+				RealisticCompass::sendReal($player);
 			}
 		}
 	}

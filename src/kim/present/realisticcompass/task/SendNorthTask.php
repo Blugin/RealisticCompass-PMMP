@@ -49,23 +49,15 @@ class SendNorthTask extends Task{
 
 	/**
 	 * @param Player $player
-	 * @param bool   $send = true
 	 */
-	public function addPlayer(Player $player, bool $send = true) : void{
+	public function addPlayer(Player $player) : void{
 		$this->players[$player->getLowerCaseName()] = $player;
-		if($send){
-			RealisticCompass::sendNorth($player);
-		}
 	}
 
 	/**
 	 * @param Player $player
-	 * @param bool   $send = true
 	 */
-	public function removePlayer(Player $player, bool $send = true) : void{
+	public function removePlayer(Player $player) : void{
 		unset($this->players[$player->getLowerCaseName()]);
-		if($send){
-			RealisticCompass::sendReal($player);
-		}
 	}
 }
