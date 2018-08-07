@@ -191,6 +191,15 @@ class RealisticCompass extends PluginBase implements CommandExecutor{
 	}
 
 	/**
+	 * @param Item $item
+	 *
+	 * @return bool
+	 */
+	public function isRealsticCompass(Item $item) : bool{
+		return $item->getId() === Item::COMPASS && $item->getNamedTagEntry(self::TAG_PLUGIN) !== null;
+	}
+
+	/**
 	 * @param Player $player
 	 */
 	public static function sendNorth(Player $player) : void{

@@ -29,7 +29,6 @@ namespace kim\present\realisticcompass\listener;
 use kim\present\realisticcompass\RealisticCompass;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
-use pocketmine\item\Item;
 
 class PlayerEventListener implements Listener{
 	/** @var RealisticCompass */
@@ -52,8 +51,7 @@ class PlayerEventListener implements Listener{
 	public function onPlayerItemHeldEvent(PlayerItemHeldEvent $event) : void{
 		if(!$event->isCancelled()){
 			$player = $event->getPlayer();
-			$item = $event->getItem();
-			if($item->getId() === Item::COMPASS && $item->getNamedTagEntry(RealisticCompass::TAG_PLUGIN) !== null){
+			if($this->plugin->isRealsticCompass($event->getItem())){
 				$this->plugin->getTask()->addPlayer($player);
 			}else{
 				$this->plugin->getTask()->removePlayer($player);
