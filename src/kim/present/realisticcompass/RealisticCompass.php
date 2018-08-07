@@ -134,11 +134,7 @@ class RealisticCompass extends PluginBase implements CommandExecutor{
 			if($item->getId() !== Item::COMPASS){
 				$sender->sendMessage($this->language->translate("commands.realisticcompass.notCompass"));
 			}else{
-				$item->setCustomName($this->language->translate("realisticcompass.name"));
-				$item->setLore(explode("\\n", $this->language->translate("realisticcompass.lore")));
-				$item->setNamedTagEntry(new ListTag(Item::TAG_ENCH, [], NBT::TAG_Compound)); //for make it cool
-				$item->setNamedTagEntry(new ByteTag(self::TAG_PLUGIN, 1)); //for check
-				$sender->getInventory()->setItemInHand($item);
+				$sender->getInventory()->setItemInHand($this->getRealsticCompass());
 
 				$sender->sendMessage($this->language->translate("commands.realisticcompass.success"));
 			}
@@ -180,6 +176,18 @@ class RealisticCompass extends PluginBase implements CommandExecutor{
 	 */
 	public function getTask() : SendNorthTask{
 		return $this->task;
+	}
+
+	/**
+	 * @return Item
+	 */
+	public function getRealsticCompass() : Item{
+		$item = Item::get(Item::COMPASS);
+		$item->setCustomName($this->language->translate("realisticcompass.name"));
+		$item->setLore(explode("\\n", $this->language->translate("realisticcompass.lore")));
+		$item->setNamedTagEntry(new ListTag(Item::TAG_ENCH, [], NBT::TAG_Compound)); //for make it cool
+		$item->setNamedTagEntry(new ByteTag(self::TAG_PLUGIN, 1)); //for check
+		return $item;
 	}
 
 	/**
