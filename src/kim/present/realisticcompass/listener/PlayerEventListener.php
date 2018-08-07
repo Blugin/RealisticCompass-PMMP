@@ -28,6 +28,7 @@ namespace kim\present\realisticcompass\listener;
 
 use kim\present\realisticcompass\RealisticCompass;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
 
 class PlayerEventListener implements Listener{
@@ -56,6 +57,20 @@ class PlayerEventListener implements Listener{
 			}else{
 				$this->plugin->getTask()->removePlayer($player);
 				RealisticCompass::sendReal($player);
+			}
+		}
+	}
+
+	/**
+	 * @priority MONITOR
+	 *
+	 * @param PlayerInteractEvent $event
+	 */
+	public function onPlayerInteractEvent(PlayerInteractEvent $event) : void{
+		if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_AIR){
+			$player = $event->getPlayer();
+			if($this->plugin->isRealsticCompass($player->getInventory()->getItemInHand())){
+				$player->sendPosition($player, 180.0, $player->pitch);
 			}
 		}
 	}
