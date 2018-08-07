@@ -38,6 +38,7 @@ use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\{
 	ByteTag, ListTag
 };
+use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\permission\{
 	Permission, PermissionManager
 };
@@ -179,5 +180,33 @@ class RealisticCompass extends PluginBase implements CommandExecutor{
 	 */
 	public function getTask() : SendNorthTask{
 		return $this->task;
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public static function sendNorth(Player $player) : void{
+		$pk = new SetSpawnPositionPacket();
+		$target = $player->subtract(0, 0, 0x7fff)->round(); //North is negative Z
+		$pk->x = $target->x;
+		$pk->y = $target->y;
+		$pk->z = $target->z;
+		$pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
+		$pk->spawnForced = true;
+		$player->sendDataPacket($pk);
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public static function sendReal(Player $player) : void{
+		$pk = new SetSpawnPositionPacket();
+		$target = $player->level->getSafeSpawn();
+		$pk->x = $target->x;
+		$pk->y = $target->y;
+		$pk->z = $target->z;
+		$pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
+		$pk->spawnForced = true;
+		$player->sendDataPacket($pk);
 	}
 }

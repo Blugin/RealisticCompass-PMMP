@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace kim\present\realisticcompass\task;
 
-use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
+use kim\present\realisticcompass\RealisticCompass;
 use pocketmine\Player;
 use pocketmine\scheduler\Task;
 
@@ -43,7 +43,7 @@ class SendNorthTask extends Task{
 	 */
 	public function onRun(int $currentTick){
 		foreach($this->players as $name => $player){
-			$this->sendNorth($player);
+			RealisticCompass::sendNorth($player);
 		}
 	}
 
@@ -54,7 +54,7 @@ class SendNorthTask extends Task{
 	public function addPlayer(Player $player, bool $send = true) : void{
 		$this->players[$player->getLowerCaseName()] = $player;
 		if($send){
-			$this->sendNorth($player);
+			RealisticCompass::sendNorth($player);
 		}
 	}
 
@@ -65,35 +65,7 @@ class SendNorthTask extends Task{
 	public function removePlayer(Player $player, bool $send = true) : void{
 		unset($this->players[$player->getLowerCaseName()]);
 		if($send){
-			$this->sendReal($player);
+			RealisticCompass::sendReal($player);
 		}
-	}
-
-	/**
-	 * @param Player $player
-	 */
-	public function sendNorth(Player $player) : void{
-		$pk = new SetSpawnPositionPacket();
-		$target = $player->subtract(0, 0, 0x7fff)->round(); //North is negative Z
-		$pk->x = $target->x;
-		$pk->y = $target->y;
-		$pk->z = $target->z;
-		$pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-		$pk->spawnForced = true;
-		$player->sendDataPacket($pk);
-	}
-
-	/**
-	 * @param Player $player
-	 */
-	public function sendReal(Player $player) : void{
-		$pk = new SetSpawnPositionPacket();
-		$target = $player->level->getSafeSpawn();
-		$pk->x = $target->x;
-		$pk->y = $target->y;
-		$pk->z = $target->z;
-		$pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-		$pk->spawnForced = true;
-		$player->sendDataPacket($pk);
 	}
 }
