@@ -1,0 +1,14 @@
+---
+name: RealisticCompass
+main: kim\present\realisticcompass\RealisticCompass
+version: 1.0.0
+api: [3.0.0, 4.0.0]
+author: PresentKim
+website: https://github.com/PresentKim/RealisticCompass-PMMP
+description: Add a compass pointing north!
+
+permissions:
+  realisticcompass.cmd:
+    description: RealisticCompass main command
+    default: true
+...
