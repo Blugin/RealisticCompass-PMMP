@@ -28,8 +28,9 @@ namespace kim\present\realisticcompass\listener;
 
 use kim\present\realisticcompass\RealisticCompass;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\player\PlayerItemHeldEvent;
+use pocketmine\event\player\{
+	PlayerInteractEvent, PlayerItemHeldEvent, PlayerJoinEvent
+};
 
 class PlayerEventListener implements Listener{
 	/** @var RealisticCompass */
@@ -58,6 +59,21 @@ class PlayerEventListener implements Listener{
 				$this->plugin->getTask()->removePlayer($player);
 				RealisticCompass::sendReal($player);
 			}
+		}
+	}
+
+	/**
+	 * @priority MONITOR
+	 *
+	 * @param PlayerJoinEvent $event
+	 */
+	public function onPlayerJoinEvent(PlayerJoinEvent $event) : void{
+		$player = $event->getPlayer();
+		if($this->plugin->isRealsticCompass($player->getInventory()->getItemInHand())){
+			$this->plugin->getTask()->addPlayer($player);
+		}else{
+			$this->plugin->getTask()->removePlayer($player);
+			RealisticCompass::sendReal($player);
 		}
 	}
 
