@@ -31,6 +31,8 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\{
 	PlayerInteractEvent, PlayerItemHeldEvent, PlayerJoinEvent
 };
+use pocketmine\item\Item;
+use pocketmine\Player;
 
 class PlayerEventListener implements Listener{
 	/** @var RealisticCompass */
@@ -52,13 +54,7 @@ class PlayerEventListener implements Listener{
 	 */
 	public function onPlayerItemHeldEvent(PlayerItemHeldEvent $event) : void{
 		if(!$event->isCancelled()){
-			$player = $event->getPlayer();
-			if($this->plugin->isRealsticCompass($event->getItem())){
-				$this->plugin->getTask()->addPlayer($player);
-			}else{
-				$this->plugin->getTask()->removePlayer($player);
-				RealisticCompass::sendReal($player);
-			}
+			$this->check($event->getPlayer(), $event->getItem());
 		}
 	}
 
@@ -69,7 +65,15 @@ class PlayerEventListener implements Listener{
 	 */
 	public function onPlayerJoinEvent(PlayerJoinEvent $event) : void{
 		$player = $event->getPlayer();
-		if($this->plugin->isRealsticCompass($player->getInventory()->getItemInHand())){
+		$this->check($player, $player->getInventory()->getItemInHand());
+	}
+
+	/**
+	 * @param Player $player
+	 * @param Item   $item
+	 */
+	public function check(Player $player, Item $item) : void{
+		if($this->plugin->isRealsticCompass($item)){
 			$this->plugin->getTask()->addPlayer($player);
 		}else{
 			$this->plugin->getTask()->removePlayer($player);
