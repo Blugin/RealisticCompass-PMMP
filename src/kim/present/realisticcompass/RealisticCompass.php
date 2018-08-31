@@ -31,7 +31,7 @@ use kim\present\realisticcompass\listener\PlayerEventListener;
 use kim\present\realisticcompass\task\CheckUpdateAsyncTask;
 use kim\present\realisticcompass\task\SendNorthTask;
 use pocketmine\command\{
-	Command, CommandExecutor, CommandSender, PluginCommand
+	Command, CommandSender, PluginCommand
 };
 use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
@@ -45,7 +45,7 @@ use pocketmine\permission\{
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 
-class RealisticCompass extends PluginBase implements CommandExecutor{
+class RealisticCompass extends PluginBase{
 	public const TAG_PLUGIN = "RealisticCompass";
 
 	/** @var RealisticCompass */
